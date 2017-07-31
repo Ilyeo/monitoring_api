@@ -50,7 +50,7 @@ RSpec.describe 'Users API', type: :request do
   end
 
   # Test suite for POST /api/users
-  describe 'POST /users' do
+  describe 'POST /api/users' do
     # valid payload
     let(:valid_attributes) { { first_name: 'Rogelio', last_name: 'Alatorre', email: 'roger@apimon.com', mobile_no: '3122111436' } }
 
@@ -76,6 +76,23 @@ RSpec.describe 'Users API', type: :request do
       it 'returns a validation failure message' do
         expect(response.body)
           .to match(/Validation failed: Email can't be blank/)
+      end
+    end
+  end
+
+  # Test suite for PUT /users/:id
+  describe 'PUT /api/users/:id' do
+    let(:valid_attributes) { { first_name: 'Jose' } }
+
+    context 'when the record exists' do
+      before { put "/api/users/#{user_id}", params: valid_attributes }
+
+      it 'updates the record' do
+        expect(response.body).to be_empty
+      end
+
+      it 'returns status code 204' do
+        expect(response).to have_http_status(204)
       end
     end
   end
