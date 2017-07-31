@@ -49,4 +49,35 @@ RSpec.describe 'Users API', type: :request do
     end
   end
 
+  # Test suite for POST /api/users
+  describe 'POST /users' do
+    # valid payload
+    let(:valid_attributes) { { first_name: 'Rogelio', last_name: 'Alatorre', email: 'roger@apimon.com', mobile_no: '3122111436' } }
+
+    context 'when the request is valid' do
+      before { post '/api/users', params: valid_attributes }
+
+      it 'creates a user' do
+        expect(json['first_name']).to eq('Rogelio')
+      end
+
+      it 'returns status code 201' do
+        expect(response).to have_http_status(201)
+      end
+    end
+
+    context 'when the request is invalid' do
+      before { post '/api/users', params: { first_name: 'Israel', last_name: 'Alatorre', mobile_no: '4499607974' } }
+
+      it 'returns status code 422' do
+        expect(response).to have_http_status(422)
+      end
+
+      it 'returns a validation failure message' do
+        expect(response.body)
+          .to match(/Validation failed: Email can't be blank/)
+      end
+    end
+  end
+
 end
