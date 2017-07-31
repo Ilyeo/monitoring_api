@@ -1,13 +1,17 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
-  before { @user = FactoryGirl.build(:user) }
+  before { @user = FactoryGirl.create(:user) }
 
   subject { @user }
 
   describe "when email is not present" do
     before { @user.email = " " }
     it { should_not be_valid }
+  end
+
+  describe "when email is valid" do
+    it { should allow_value(@user.email).for(:email) }
   end
 
   it { should respond_to(:first_name) }
