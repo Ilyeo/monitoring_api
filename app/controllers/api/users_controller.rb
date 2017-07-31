@@ -1,5 +1,5 @@
 class Api::UsersController < ApplicationController
-  before_action :set_user, only: [:show, :update]
+  before_action :set_user, only: [:show, :update, :destroy]
 
   # GET /api/users
   def index
@@ -25,6 +25,12 @@ class Api::UsersController < ApplicationController
     head :no_content
   end
 
+  # DELETE /api/users/:id
+  def destroy
+    @user.destroy
+    head :no_content
+  end
+
   private
 
   def user_params
@@ -34,5 +40,4 @@ class Api::UsersController < ApplicationController
   def set_user
     @user = User.find(params[:id])
   end
-
 end

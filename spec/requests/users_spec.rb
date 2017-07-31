@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe 'Users API', type: :request do
-
   let!(:users) { create_list(:user, 10) }
   let(:user_id) { users.first.id }
 
@@ -80,7 +79,7 @@ RSpec.describe 'Users API', type: :request do
     end
   end
 
-  # Test suite for PUT /users/:id
+  # Test suite for PUT /api/users/:id
   describe 'PUT /api/users/:id' do
     let(:valid_attributes) { { first_name: 'Jose' } }
 
@@ -97,4 +96,12 @@ RSpec.describe 'Users API', type: :request do
     end
   end
 
+  # Test suite for DELETE /api/users/:id
+  describe 'DELETE /api/users/:id' do
+    before { delete "/api/users/#{user_id}" }
+
+    it 'returns status code 204' do
+      expect(response).to have_http_status(204)
+    end
+  end
 end
