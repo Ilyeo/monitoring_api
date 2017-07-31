@@ -3,4 +3,8 @@ module RequestSpecHelper
   def json
     JSON.parse(response.body)
   end
+
+  def logger
+    Rails::logger
+  end
 end
