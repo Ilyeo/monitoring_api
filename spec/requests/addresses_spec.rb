@@ -87,4 +87,35 @@ RSpec.describe 'Addresses API', type: :request do
     end
   end
 
+  # Test suite for PUT /api/users/:user_id/addresses
+  describe 'PUT /api/users/:users_id/addresses' do
+    let(:valid_attributes) { { street: 'Av. Constitucion' } }
+
+    before { put "/api/users/#{user_id}/addresses/#{address_id}", params: valid_attributes }
+
+    context 'when address exist' do
+      it 'returns status code 204' do
+        expect(response).to have_http_status(204)
+      end
+
+      it 'update the address' do
+        updated_item = Address.find(address_id)
+        expect(updated_item.street).to match(/Av. Constitucion/)
+      end
+    end
+
+    context 'when the address does not exist' do
+      let(:address_id) { 0 }
+
+      it 'returns status code 404' do
+        expect(response).to have_http_status(404)
+      end
+
+      it 'returns a not found message' do
+        expect(response.body).to match(/Couldn't find Address/)
+      end
+    end
+  end
+
+
 end

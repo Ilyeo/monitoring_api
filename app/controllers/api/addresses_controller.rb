@@ -1,6 +1,6 @@
 class Api::AddressesController < ApplicationController
   before_action :set_user
-  before_action :set_user_address, only: [:show]
+  before_action :set_user_address, only: [:show, :update]
 
   # GET /api/users/:user_id/addresses
   def index
@@ -16,6 +16,11 @@ class Api::AddressesController < ApplicationController
   def create
     @user.addresses.create!(address_params)
     json_response(@user, :created)
+  end
+
+  def update
+    @address.update(address_params)
+    head :no_content
   end
 
   private
