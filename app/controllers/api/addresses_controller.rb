@@ -12,6 +12,12 @@ class Api::AddressesController < ApplicationController
     json_response(@address)
   end
 
+  # POST /api/users/:user_id/addresses
+  def create
+    @user.addresses.create!(address_params)
+    json_response(@user, :created)
+  end
+
   private
 
   def set_user
@@ -22,4 +28,7 @@ class Api::AddressesController < ApplicationController
     @address = @user.addresses.find_by!(id: params[:id]) if @user
   end
 
+  def address_params
+    params.permit(:street, :zip_code, :state, :country, :city )
+  end
 end

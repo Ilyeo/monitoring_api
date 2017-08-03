@@ -61,4 +61,30 @@ RSpec.describe 'Addresses API', type: :request do
       end
     end
   end
+
+  # Test suite for POST /api/users/:user_id/addresses
+  describe 'POST /api/users/:users_id/addresses' do
+    let(:valid_attributes) { { street: 'Mateo Almanza 341', zip_code: '20126', state: 'Aguascalientes', country: 'Mexico', city: 'Aguascalientes' } }
+
+    context 'when request attributes are valid' do
+      before { post "/api/users/#{user_id}/addresses", params: valid_attributes }
+
+      it 'returns status code 201' do
+        expect(response).to have_http_status(201)
+      end
+    end
+
+    context 'when an invalid request' do
+      before { post "/api/users/#{user_id}/addresses", params: {} }
+
+      it 'returns status code 422' do
+        expect(response).to have_http_status(422)
+      end
+
+      it 'returns a failure message' do
+        expect(response.body).to match(/Validation failed: Street can't be blank/)
+      end
+    end
+  end
+
 end
