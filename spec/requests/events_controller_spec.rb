@@ -64,4 +64,29 @@ RSpec.describe 'Events API', type: :request do
       end
     end
   end
+
+  # Test suite for GET /api/users/:user_id/addresses/:address_id/events'
+  describe 'POST /api/users/:users_id/addresses/:address_id/events' do
+    let(:valid_attributes) { { zone_code: 07, zone_description: 'Main door', event_type: 'Fuego'  } }
+
+    context 'when request attributes are valid' do
+      before { post "/api/users/#{user_id}/addresses/#{address_id}/events", params: valid_attributes }
+
+      it 'returns status code 201' do
+        expect(response).to have_http_status(201)
+      end
+    end
+
+    context 'when an invalid request' do
+      before { post "/api/users/#{user_id}/addresses/#{address_id}/events", params: {} }
+
+      it 'returns status code 422' do
+        expect(response).to have_http_status(422)
+      end
+
+      it 'returns a failure message' do
+        expect(response.body).to match(/Validation failed: Zone code can't be blank/)
+      end
+    end
+  end
 end
