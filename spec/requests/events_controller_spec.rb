@@ -119,4 +119,13 @@ RSpec.describe 'Events API', type: :request do
       end
     end
   end
+
+  # Test suite for DELETE /api/users/:user_id/addresses/:address_id/events/:id
+  describe 'DELETE /api/users/:user_id/addresses/:address_id/events/:id' do
+    before { delete "/api/users/#{user_id}/addresses/#{address_id}/events/#{event_id}" }
+
+    it 'returns status code 204' do
+      expect(response).to have_http_status(204)
+    end
+  end
 end

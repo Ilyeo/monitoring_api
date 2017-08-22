@@ -1,6 +1,6 @@
 class Api::EventsController < ApplicationController
   before_action :set_address
-  before_action :set_address_event, only: [:show, :update]
+  before_action :set_address_event, only: [:show, :update, :destroy]
 
   # GET /api/users/:user_id/addresses/:address_id/events
   def index
@@ -21,6 +21,12 @@ class Api::EventsController < ApplicationController
   # PUT /api/users/:user_id/addresses/:address_id/events/:id
   def update
     @event.update(event_params)
+    head :no_content
+  end
+
+  # DELETE /api/users/:user_id/addresses/:address_id/events/:id
+  def destroy
+    @event.destroy
     head :no_content
   end
 
