@@ -89,4 +89,34 @@ RSpec.describe 'Events API', type: :request do
       end
     end
   end
+
+  # Test suite for PUT /api/users/:user_id/addresses/:address_id/events/:id
+  describe '/api/users/:user_id/addresses/:address_id/events/:id' do
+    let(:valid_attributes) { { zone_description: 'Living room' } }
+
+    before { put "/api/users/#{user_id}/addresses/#{address_id}/events/#{event_id}", params: valid_attributes }
+
+    context 'when event exist' do
+      it 'returns status code 204' do
+        expect(response).to have_http_status(204)
+      end
+
+      it 'update the event' do
+        updated_item = Event.find(event_id)
+        expect(updated_item.zone_description).to match(/Living room/)
+      end
+    end
+
+    context 'when the event does not exist' do
+      let(:event_id) { 0 }
+
+      it 'returns status code 404' do
+        expect(response).to have_http_status(404)
+      end
+
+      it 'returns a not found message' do
+        expect(response.body).to match(/Couldn't find Event/)
+      end
+    end
+  end
 end

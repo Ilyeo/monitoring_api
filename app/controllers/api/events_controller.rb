@@ -1,6 +1,6 @@
 class Api::EventsController < ApplicationController
   before_action :set_address
-  before_action :set_address_event, only: [:show]
+  before_action :set_address_event, only: [:show, :update]
 
   # GET /api/users/:user_id/addresses/:address_id/events
   def index
@@ -12,10 +12,16 @@ class Api::EventsController < ApplicationController
     json_response(@event)
   end
 
-  # POST /api/users/:user_id/addresses
+  # POST /api/users/:user_id/addresses/:address_id/events
   def create
-    @address.events.create!(events_params)
+    @address.events.create!(event_params)
     json_response(@address, :created)
+  end
+
+  # PUT /api/users/:user_id/addresses/:address_id/events/:id
+  def update
+    @event.update(event_params)
+    head :no_content
   end
 
   private
@@ -28,7 +34,7 @@ class Api::EventsController < ApplicationController
     @event = @address.events.find_by!(id: params[:id]) if @address
   end
 
-  def events_params
+  def event_params
     params.permit(:zone_code, :zone_description, :event_type)
   end
 end
